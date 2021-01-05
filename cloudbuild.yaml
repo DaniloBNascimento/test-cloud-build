@@ -1,0 +1,19 @@
+steps:
+  # build the container image
+- name: "gcr.io/cloud-builders/docker"
+  args: ["build", "-t", "gcr.io/projeto-dev-299315/nginx:1.0", "."]
+  
+  # push container image
+- name: "gcr.io/cloud-builders/docker"
+  args: ["push", "gcr.io/projeto-dev-299315/nginx:1.0"]
+  
+  # Deploy
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=deploy-web.yaml
+  - --image=gcr.io/projeto-dev-299315/nginx:1.0
+  - --location=us-central1-c
+  - --cluster=cluster-1
+
+
